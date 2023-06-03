@@ -30,3 +30,42 @@ Notes:
     -   8, 9, 10, 11, 12, 13,
 2.  Negative statements, dalas
     -   10,
+
+```{r}
+library(tidyverse)
+library(readxl)
+```
+
+```{r}
+pandal <- read_excel("data/pandal.xlsx")
+pandal <- tibble(pandal)
+```
+
+```{r}
+pandal |>
+  select(edad, btp1, btp2) |>
+  summary()
+
+```
+
+```{r}
+pandal |>
+  select(edad, btp1, btp2) |>
+  drop_na() |>
+  summarise_if(is.numeric, sd)
+  
+```
+
+```{r}
+pandal |>
+  group_by(etnisidad)|>
+  summarise(no = n()) |>
+  mutate(per = no/13)
+```
+
+```{r}
+pandal |>
+  group_by(kasarian)|>
+  summarise(no = n()) |>
+  mutate(per = no/13)
+```
