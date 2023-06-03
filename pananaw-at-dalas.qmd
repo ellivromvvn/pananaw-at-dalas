@@ -8,19 +8,25 @@ date: "`r Sys.Date()`"
 
 ### Pamagat
 
-Kaugnayan ng Pananaw at Dalas ng Paggamit ng Wikang Iloko
-sa Kahusayan sa Pagtuturo ng MTB-MLE
+Kaugnayan ng Pananaw at Dalas ng Paggamit ng Wikang Iloko sa Kahusayan sa Pagtuturo ng MTB-MLE
 
-### Paglalahad ng Layunin 
+### Paglalahad ng Layunin
 
 Ang pananaliksik na ito ay ay naglalayong matugunan at mapagtuunan ng pansin ang mga sumusunod na layunin:
 
-1. Matukoy ang pananaw ng mga piling guro sa gamit ng Wikang Iloko sa pagtuturo ng MTB-MLE.
+1.  Matukoy ang pananaw ng mga piling guro sa gamit ng Wikang Iloko sa pagtuturo ng MTB-MLE.
 
-2. Matukoy ang antas sa paggamit ng Wikang Iloko ng mga piling guro sa pagtuturo ng MTB-MLE.
+2.  Matukoy ang antas sa paggamit ng Wikang Iloko ng mga piling guro sa pagtuturo ng MTB-MLE.
 
-3. Matukoy ang pananaw at antas ng paggamit ng Wikang Iloko ng piling guro sa pagtuturo ng MTB-MLE.
+3.  Matukoy ang pananaw at antas ng paggamit ng Wikang Iloko ng piling guro sa pagtuturo ng MTB-MLE.
 
-4. Matukoy ang kaugnayan ng sa pagtuturo ng MTB-MLE.
+4.  Matukoy ang kaugnayan ng ng pananaw sa kahusayan sa pagtuturo ng MTB-MLE.
 
-5. Matukoy ang kaugnay ng antas ng paggamit ng Wikang Iloko sa kasalukuyan sa pagtuturo ng MTB-MLE.
+5.  Matukoy ang kaugnay ng antas ng paggamit ng Wikang Iloko sa kasalukuyan sa pagtuturo ng MTB-MLE.
+
+Notes:
+
+1.  Negative statements, pananaw
+    -   8, 9, 10, 11, 12, 13,
+2.  Negative statements, dalas
+    -   10,
