@@ -50,7 +50,7 @@ pandal <- tibble(pandal)
 ### Re code Negative Statements
 
 ```{r}
-pandal <- pandal |>
+pandal_rev <- pandal |>
   mutate_at(vars(p8:p13, d10), list(~case_when(
     . == 4 ~ 1,
     . == 3 ~ 2,
@@ -59,119 +59,106 @@ pandal <- pandal |>
   )))
 ```
 
-### Row Wise Mean and SD  for P and D
+### Row Wise Mean and SD for P and D
 
 ```{r}
-pandal <- pandal |>
+pandal_rev <- pandal_rev |>
   rowwise() |>
-  mutate(p_mean = mean((c_across(p1:p15)))) |>
-  mutate(p_sd = sd((c_across(p1:p15)))) |>
-  mutate(d_mean = mean((c_across(d1:d15)))) |>
-  mutate(d_sd = sd((c_across(d1:d15)))) |>
+  mutate(p_mean = mean((c_across(p1:p15))),
+         d_mean = mean((c_across(d1:d15)))) |>
   ungroup()
 ```
 
 ### Descriptive Statistics of Profile
 
 ```{r}
-pandal |>
+pandal_rev |>
   get_summary_stats(
-    edad, btp1, btp2, p_mean, d_mean, p_sd, d_sd,
-    show = c("n", "mean", "sd", "min", "max"),
+    edad, btp1, btp2, p_mean, d_mean,
+    show = c("mean", "sd", "min", "max"),
   ) |>
   mutate_if(is.numeric, round, 2) |>
   gt()
 ```
 
 ```{r}
-pandal |>
-  select(edad, btp1, btp2,) |>
-  drop_na() |>
-  summarise_if(is.numeric, sd) |>
-  round(digits = 2)
-  
+pandal_rev |>
+  count(etnisidad) |>
+  mutate(
+    percent = round((n / sum(n))*100, digits = 2)
+  ) |>
+  gt()
 ```
 
 ```{r}
-pandal |>
-  group_by(etnisidad)|>
-  summarise(no = n()) |>
-  mutate(per = no/13)
-```
-
-```{r}
-pandal |>
-  group_by(kasarian)|>
-  summarise(no = n()) |>
-  mutate(per = no/13)
+pandal_rev |>
+  count(kasarian) |>
+  mutate(
+    percent = round((n / sum(n))*100, digits = 2)
+  ) |>
+  gt()
 ```
 
 ### Data for Pananaw
 
 ```{r}
-pan1 <- pandal |>
+pan <- pandal_rev |>
   select(p1:p15) |>
-  summarise_if(is.numeric, mean) |>
-  rowwise() |>
-  mutate(po_mean = mean((c_across(p1:p15)))) |>
-  pivot_longer(cols = everything(), names_to = "pananaw",
-               values_to = "mean")
-
-pan2 <- pandal |>
-  select(p1:p15) |>
-  summarise_if(is.numeric, sd) |>
-  rowwise() |>
-  mutate(po_sd = mean((c_across(p1:p15)))) |>
-  pivot_longer(cols = everything(), names_to = "pananaw",
-               values_to = "sd") |>
-  select(sd)
-
-pan3 <- bind_cols(pan1,pan2) |>
+  get_summary_stats(
+    show = c("mean", "sd")
+  ) |>
+  mutate_if(is.numeric, round, 2) |>
   mutate(QD = case_when(
     mean >= 3.26 & mean <= 4 ~ "Lubos na Sumasang-Ayon",
     mean >= 2.51 & mean <= 3.25 ~ "Sumasang-Ayon",
     mean >= 1.76 & mean <= 2.5 ~ "Bahagyang Sumasang-Ayon",
     mean >= 1 & mean <= 1.75 ~ "Hindi Sumasang-Ayon"
   ))
+gt(pan)
+```
 
-pan3 <- pan3 |>
-  mutate(mean = round(mean,digits = 2),
-         sd = round(sd, digits = 2))
-
-pan3 |>
+```{r}
+pan |>
+  get_summary_stats(mean, show = c("mean")) |>
+  mutate(average_pan_sd = sqrt(sum((pan$sd)^2)/n)) |>
+  mutate_if(is.numeric, round, 2) |>
+  mutate(QD = case_when(
+    mean >= 3.26 & mean <= 4 ~ "Lubos na Sumasang-Ayon",
+    mean >= 2.51 & mean <= 3.25 ~ "Sumasang-Ayon",
+    mean >= 1.76 & mean <= 2.5 ~ "Bahagyang Sumasang-Ayon",
+    mean >= 1 & mean <= 1.75 ~ "Hindi Sumasang-Ayon"
+  )) |>
   gt()
 ```
 
 ### Data for Dalas
 
 ```{r}
-dal1 <- pandal |>
+dal <- pandal_rev |>
   select(d1:d15) |>
-  summarise_if(is.numeric, mean) |>
-  rowwise() |>
-  mutate(do_mean = mean((c_across(d1:d15)))) |>
-  pivot_longer(cols = everything(), names_to = "dalas",
-               values_to = "mean")
-
-dal2 <- pandal |>
-  select(d1:d15) |>
-  summarise_if(is.numeric, sd) |>
-  rowwise() |>
-  mutate(do_sd = mean((c_across(d1:d15)))) |>
-  pivot_longer(cols = everything(), names_to = "dalas",
-               values_to = "sd") |>
-  select(sd)
-
-dal3 <- bind_cols(dal1,dal2) |>
+  get_summary_stats(
+    show = c("mean", "sd")
+  ) |>
+  mutate_if(is.numeric, round, 2) |>
   mutate(QD = case_when(
     mean >= 3.26 & mean <= 4 ~ "Madalas na Ginagamit",
     mean >= 2.51 & mean <= 3.25 ~ "Ginagamit",
     mean >= 1.76 & mean <= 2.5 ~ "Di-Madalas na Ginagamit",
     mean >= 1 & mean <= 1.75 ~ "Di-Kailanman Ginagamit"
   ))
+gt(dal)
+```
 
-
-
-dal3 |>
+```{r}
+dal |>
+  get_summary_stats(mean, show = c("mean")) |>
+  mutate(average_dal_sd = sqrt(sum((dal$sd)^2)/n)) |>
+  mutate_if(is.numeric, round, 2) |>
+  mutate(QD = case_when(
+    mean >= 3.26 & mean <= 4 ~ "Madalas na Ginagamit",
+    mean >= 2.51 & mean <= 3.25 ~ "Ginagamit",
+    mean >= 1.76 & mean <= 2.5 ~ "Di-Madalas na Ginagamit",
+    mean >= 1 & mean <= 1.75 ~ "Di-Kailanman Ginagamit"
+  )) |>
   gt()
 ```
