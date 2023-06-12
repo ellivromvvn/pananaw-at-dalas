@@ -38,6 +38,7 @@ library(tidyverse)
 library(readxl)
 library(gt)
 library(rstatix)
+library(smplot2)
 ```
 
 ### Import Data
@@ -131,6 +132,15 @@ pan |>
   gt()
 ```
 
+```{r}
+pandal_rev |>
+  get_summary_stats(p_mean,
+    show = c("mean", "sd", "min", "max"),
+  ) |>
+  mutate_if(is.numeric, round, 2) |>
+  gt()
+```
+
 ### Data for Dalas
 
 ```{r}
@@ -161,4 +171,33 @@ dal |>
     mean >= 1 & mean <= 1.75 ~ "Di-Kailanman Ginagamit"
   )) |>
   gt()
+```
+
+```{r}
+pandal_rev |>
+  get_summary_stats(d_mean,
+    show = c("mean", "sd", "min", "max"),
+  ) |>
+  mutate_if(is.numeric, round, 2) |>
+  gt()
+```
+
+### Objective 3
+
+```{r}
+ob3 <- cor.test(pandal_rev$p_mean, pandal_rev$d_mean,
+                method = "spearman", exact=FALSE)
+  
+tidy(ob3) |>
+  mutate_if(is.numeric, round, 2) |>
+  gt()
+```
+
+```{r}
+pandal_rev |>
+ggplot() +
+  aes(x = p_mean, y = d_mean) +
+  geom_point(colour = "#0c4c8a", position = "jitter") +
+  sm_statCorr(corr_method = 'spearman') +
+  theme_minimal()
 ```
